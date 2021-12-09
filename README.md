@@ -28,17 +28,21 @@ Use your newly created token to get metering values:
 ```python
 from elvia import Elvia
 import json
+import asyncio
 
 token = "token from elvia.no"
 
 elvia = Elvia(token)
-meter_value_client = elvia.meter_value()
 
-print(json.dumps(meter_value_client.get_meter_values(
-    {
-        "start_time": "2021-12-08T01:00:00",
-        "end_time": "2021-12-08T02:00:00",
-        "metering_point_ids": ["abc"],
-        "include_production": True
-    })))
+async def get_meter_values():
+    meter_value_client = elvia.meter_value()
+
+    print(json.dumps(meter_value_client.get_meter_values(
+        {
+            "start_time": "2021-12-08T01:00:00",
+            "end_time": "2021-12-08T02:00:00",
+            "metering_point_ids": ["abc"],
+            "include_production": True
+        })))
+asyncio.run(get_meter_values())
 ```
