@@ -1,0 +1,8 @@
+elvia.egg-info/
+dist/
+venv/
+.idea/
+build/
+__pycache__/
+.tox/
+
