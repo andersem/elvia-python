@@ -10,13 +10,6 @@ class MaxHoursParams(TypedDict):
     include_production: bool
 
 
-class MaxHoursParams(TypedDict):
-    start_time: str
-    end_time: str
-    metering_point_ids: List[str]
-    include_production: bool
-
-
 class MaxHoursTimeSeries(TypedDict):
     startTime: str
     endTime: str

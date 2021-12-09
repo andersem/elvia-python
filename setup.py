@@ -26,7 +26,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     zip_safe=False,
     install_requires=[
-        'requests >= 2.20; python_version >= "3.0"',
+        'aiohttp >= 3.8.1; python_version >= "3.4"',
         'typing_extensions >= 3.10; python_version >= "3.0"',
     ],
     extras_require={

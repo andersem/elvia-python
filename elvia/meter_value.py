@@ -1,11 +1,14 @@
-import requests
-
-from elvia.error import InvalidRequestBody, AuthError, UnexpectedError
+from elvia.error import (
+    InvalidRequestBody,
+    AuthError,
+    UnexpectedError,
+)
 from elvia.types.max_hours_types import MaxHoursParams, MaxHoursResponse
 from elvia.types.meter_value_types import MeterValueParams, MeterValueResponse
 from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
+import aiohttp
 
 
 class MeterValue:
@@ -23,7 +26,7 @@ class MeterValue:
         self.api_url = api_url
         self.token = token
 
-    def get_max_hours(self, params: MaxHoursParams) -> MaxHoursResponse:
+    async def get_max_hours(self, params: MaxHoursParams) -> MaxHoursResponse:
         """
         Get the hour for maximum consumption (or production)
         in the current and previous month.
@@ -49,19 +52,19 @@ class MeterValue:
                 "true" if params["include_production"] else "false"
             )
         url = urlparse(url_base)._replace(query=urlencode(query))
+        url_string = urlunparse(url)
+        async with aiohttp.ClientSession(
+            headers={
+                "Authorization": "Bearer " + self.token,
+            }
+        ) as websession:
+            response = await websession.get(url_string)
+            _verify_response(response, 200)
+            return await response.json()
 
-        response = requests.get(
-            urlunparse(url),
-            headers=(
-                {
-                    "Authorization": "Bearer " + self.token,
-                }
-            ),
-        )
-        _verify_response(response, 200)
-        return response.json()
-
-    def get_meter_values(self, params: MeterValueParams) -> MeterValueResponse:
+    async def get_meter_values(
+        self, params: MeterValueParams
+    ) -> MeterValueResponse:
         """
         Get metering volumes for the given metering points in the requested period.
 
@@ -85,36 +88,34 @@ class MeterValue:
                 "true" if params["include_production"] else "false"
             )
         url = urlparse(url_base)._replace(query=urlencode(query))
-        response = requests.get(
-            urlunparse(url),
-            headers=(
-                {
-                    "Authorization": "Bearer " + self.token,
-                }
-            ),
-        )
-        _verify_response(response, 200)
-        return response.json()
+        async with aiohttp.ClientSession(
+            headers={
+                "Authorization": "Bearer " + self.token,
+            }
+        ) as websession:
+            response = await websession.get(urlunparse(url))
+            _verify_response(response, 200)
+            return await response.json()
 
 
-def _verify_response(response, expected_status_code):
-    if response.status_code == 400:
+def _verify_response(response, expected_status):
+    if response.status == 400:
         raise InvalidRequestBody(
             "Body is malformed",
-            status_code=response.status_code,
+            status=response.status,
             headers=response.headers,
             body=response.text,
         )
 
-    if response.status_code in [401, 403]:
+    if response.status in [401, 403]:
         raise AuthError(
             "Auth failed",
-            status_code=response.status_code,
+            status=response.status,
             headers=response.headers,
             body=response.text,
         )
 
-    if response.status_code != expected_status_code:
+    if response.status != expected_status:
         raise UnexpectedError(
             "Received unexpected server response",
             status_code=response.status_code,
