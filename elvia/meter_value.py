@@ -1,11 +1,16 @@
-from elvia.error import ElviaException, InvalidRequestBody, AuthError, UnexpectedError
+from elvia.error import (
+    ElviaException,
+    InvalidRequestBody,
+    AuthError,
+    UnexpectedError,
+)
 from elvia.types.max_hours_types import MaxHoursParams, MaxHoursResponse
 from elvia.types.meter_value_types import MeterValueParams, MeterValueResponse
 from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 import aiohttp
-import asyncio
+
 
 class MeterValue:
     """
@@ -21,7 +26,6 @@ class MeterValue:
     ):
         self.api_url = api_url
         self.token = token
-
 
     async def get_max_hours(self, params: MaxHoursParams) -> MaxHoursResponse:
         """
@@ -59,7 +63,9 @@ class MeterValue:
             _verify_response(response, 200)
             return await response.json()
 
-    async def get_meter_values(self, params: MeterValueParams) -> MeterValueResponse:
+    async def get_meter_values(
+        self, params: MeterValueParams
+    ) -> MeterValueResponse:
         """
         Get metering volumes for the given metering points in the requested period.
 
@@ -91,6 +97,7 @@ class MeterValue:
             response = await websession.get(urlunparse(url))
             _verify_response(response, 200)
             return await response.json()
+
 
 def _verify_response(response, expected_status):
     if response.status == 400:

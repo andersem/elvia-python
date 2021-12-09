@@ -8,6 +8,7 @@ token = os.environ.get("ELVIA_TOKEN")
 elvia = Elvia(token)
 meter_value_client = elvia.meter_value()
 
+
 async def print_max_hours():
     print(
         json.dumps(
@@ -21,7 +22,6 @@ async def print_max_hours():
         )
     )
 
-
     max_hours = await meter_value_client.get_max_hours(
         {
             "calculate_time": "2021-12-08T01:00:00",
@@ -30,5 +30,6 @@ async def print_max_hours():
     )
 
     print(json.dumps(max_hours["meteringpoints"]))
+
 
 asyncio.run(print_max_hours())
