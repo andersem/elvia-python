@@ -1,7 +1,7 @@
 from typing_extensions import TypedDict
 from typing import List
 
-from elvia.types.common import CustomerContract
+from elvia_sdk.types.common import CustomerContract
 
 
 class MeterValueParams(TypedDict):

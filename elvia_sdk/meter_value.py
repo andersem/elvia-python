@@ -1,8 +1,8 @@
 import requests
 
-from elvia.error import InvalidRequestBody, AuthError, UnexpectedError
-from elvia.types.max_hours_types import MaxHoursParams, MaxHoursResponse
-from elvia.types.meter_value_types import MeterValueParams, MeterValueResponse
+from elvia_sdk.error import InvalidRequestBody, AuthError, UnexpectedError
+from elvia_sdk.types.max_hours_types import MaxHoursParams, MaxHoursResponse
+from elvia_sdk.types.meter_value_types import MeterValueParams, MeterValueResponse
 from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse

@@ -8,12 +8,12 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
 version_contents = {}
 
 with open(
-    os.path.join(this_directory, "elvia", "version.py"), encoding="utf-8"
+    os.path.join(this_directory, "elvia_sdk", "version.py"), encoding="utf-8"
 ) as f:
     exec(f.read(), version_contents)
 
 setup(
-    name="elvia",
+    name="elvia_sdk",
     version=version_contents["VERSION"],
     description="Python bindings for the Elvia API",
     long_description=long_description,

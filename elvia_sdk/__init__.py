@@ -1,4 +1,4 @@
-from elvia.meter_value import MeterValue
+from elvia_sdk.meter_value import MeterValue
 
 
 class Elvia:

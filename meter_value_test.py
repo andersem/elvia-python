@@ -1,4 +1,4 @@
-from elvia import Elvia
+from elvia_sdk import Elvia
 import json
 import os
 

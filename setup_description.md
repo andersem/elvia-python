@@ -10,13 +10,13 @@ A Python SDK for Elvia's consumer facing APIs. Currently supports:
 You can install this package by using the pip tool and installing:
 
 ```
-pip install elvia
+pip install elvia_sdk
 ```
 
 Or:
 
 ```
-easy_install elvia
+easy_install elvia_sdk
 ```
 
 

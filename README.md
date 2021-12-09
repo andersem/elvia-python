@@ -10,7 +10,7 @@ current grid tariffes in Elvia's power grid.
 Install from pip by using:
 
 ```
-pip install --upgrade elvia
+pip install --upgrade elvia_sdk
 ```
 
 ### Requirements
@@ -26,7 +26,7 @@ Get token using this guide: https://www.elvia.no/smart-forbruk/alt-om-din-stromm
 Use your newly created token to get metering values:
 
 ```python
-from elvia import Elvia
+from elvia_sdk import Elvia
 import json
 
 token = "token from elvia.no"
