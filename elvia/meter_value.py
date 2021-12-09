@@ -1,5 +1,4 @@
 from elvia.error import (
-    ElviaException,
     InvalidRequestBody,
     AuthError,
     UnexpectedError,
