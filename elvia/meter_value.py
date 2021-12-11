@@ -59,7 +59,7 @@ class MeterValue:
             }
         ) as websession:
             response = await websession.get(url_string)
-            _verify_response(response, 200)
+            await _verify_response(response, 200)
             return await response.json()
 
     async def get_meter_values(
@@ -94,25 +94,25 @@ class MeterValue:
             }
         ) as websession:
             response = await websession.get(urlunparse(url))
-            _verify_response(response, 200)
+            await _verify_response(response, 200)
             return await response.json()
 
 
-def _verify_response(response, expected_status):
+async def _verify_response(response, expected_status):
     if response.status == 400:
         raise InvalidRequestBody(
             "Body is malformed",
-            status=response.status,
+            status_code=response.status,
             headers=response.headers,
-            body=response.text,
+            body=await response.text(),
         )
 
     if response.status in [401, 403]:
         raise AuthError(
             "Auth failed",
-            status=response.status,
+            status_code=response.status,
             headers=response.headers,
-            body=response.text,
+            body=await response.text(),
         )
 
     if response.status != expected_status:
@@ -120,5 +120,5 @@ def _verify_response(response, expected_status):
             "Received unexpected server response",
             status_code=response.status_code,
             headers=response.headers,
-            body=response.text,
+            body=await response.text(),
         )
