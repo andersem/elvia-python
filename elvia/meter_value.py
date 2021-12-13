@@ -32,7 +32,7 @@ class MeterValue:
         *,
         calculate_time: str = None,
         metering_point_ids: List[str] = [],
-        include_production: bool = False
+        include_production: bool = False,
     ) -> MaxHoursResponse:
         """
         Get the hour for maximum consumption (or production)
@@ -67,15 +67,13 @@ class MeterValue:
             await _verify_response(response, 200)
             return await response.json()
 
-
     async def get_meter_values(
         self,
         *,
         start_time: str = None,
         end_time: str = None,
         metering_point_ids: List[str] = [],
-        include_production: bool = False
-
+        include_production: bool = False,
     ) -> MeterValueResponse:
         """
         Get metering volumes for the given metering points in the requested period.

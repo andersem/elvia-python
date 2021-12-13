@@ -3,6 +3,7 @@ from typing import List
 
 from elvia.types.common import CustomerContract
 
+
 class MeterValueTimeSeries(TypedDict):
     startTime: str
     endTime: str
