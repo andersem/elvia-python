@@ -4,12 +4,6 @@ from typing import List
 from elvia.types.common import CustomerContract
 
 
-class MaxHoursParams(TypedDict):
-    calculate_time: str
-    metering_point_ids: List[str]
-    include_production: bool
-
-
 class MaxHoursTimeSeries(TypedDict):
     startTime: str
     endTime: str

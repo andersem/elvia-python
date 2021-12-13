@@ -1,3 +1,4 @@
+from typing import List
 from elvia.error import (
     InvalidRequestBody,
     AuthError,
@@ -26,7 +27,13 @@ class MeterValue:
         self.api_url = api_url
         self.token = token
 
-    async def get_max_hours(self, params: MaxHoursParams) -> MaxHoursResponse:
+    async def get_max_hours(
+        self,
+        *,
+        calculate_time: str = None,
+        metering_point_ids: List[str] = [],
+        include_production: bool = False
+    ) -> MaxHoursResponse:
         """
         Get the hour for maximum consumption (or production)
         in the current and previous month.
@@ -43,14 +50,12 @@ class MeterValue:
         url_base = f"{self.api_url}/customer/metervalues/api/v1/maxhours"
 
         query = {}
-        if "calculate_time" in params:
-            query["calculateTime"] = params["calculate_time"]
-        if "metering_point_ids" in params:
-            query["meteringPointIds"] = ",".join(params["metering_point_ids"])
-        if "include_production" in params:
-            query["includeProduction"] = (
-                "true" if params["include_production"] else "false"
-            )
+        if calculate_time is not None:
+            query["calculateTime"] = calculate_time
+        if len(metering_point_ids) > 0:
+            query["meteringPointIds"] = ",".join(metering_point_ids)
+        if include_production:
+            query["includeProduction"] = include_production
         url = urlparse(url_base)._replace(query=urlencode(query))
         url_string = urlunparse(url)
         async with aiohttp.ClientSession(
@@ -62,8 +67,15 @@ class MeterValue:
             await _verify_response(response, 200)
             return await response.json()
 
+
     async def get_meter_values(
-        self, params: MeterValueParams
+        self,
+        *,
+        start_time: str = None,
+        end_time: str = None,
+        metering_point_ids: List[str] = [],
+        include_production: bool = False
+
     ) -> MeterValueResponse:
         """
         Get metering volumes for the given metering points in the requested period.
@@ -77,16 +89,15 @@ class MeterValue:
 
         url_base = f"{self.api_url}/customer/metervalues/api/v1/metervalues"
         query = {}
-        if "start_time" in params:
-            query["startTime"] = params["start_time"]
-        if "end_time" in params:
-            query["endTime"] = params["end_time"]
-        if "metering_point_ids" in params:
-            query["meteringPointIds"] = ",".join(params["metering_point_ids"])
-        if "include_production" in params:
-            query["includeProduction"] = (
-                "true" if params["include_production"] else "false"
-            )
+        if start_time is not None:
+            query["startTime"] = start_time
+        if end_time is not None:
+            query["endTime"] = end_time
+        if len(metering_point_ids) > 0:
+            query["meteringPointIds"] = ",".join(metering_point_ids)
+        if include_production:
+            query["includeProduction"] = include_production
+
         url = urlparse(url_base)._replace(query=urlencode(query))
         async with aiohttp.ClientSession(
             headers={
