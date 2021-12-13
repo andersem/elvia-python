@@ -4,8 +4,8 @@ from elvia.error import (
     AuthError,
     UnexpectedError,
 )
-from elvia.types.max_hours_types import MaxHoursParams, MaxHoursResponse
-from elvia.types.meter_value_types import MeterValueParams, MeterValueResponse
+from elvia.types.max_hours_types import MaxHoursResponse
+from elvia.types.meter_value_types import MeterValueResponse
 from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
