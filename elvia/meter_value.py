@@ -1,9 +1,5 @@
 from typing import List
-from elvia.error import (
-    InvalidRequestBody,
-    AuthError,
-    UnexpectedError,
-)
+from elvia.request_handler import verify_response
 from elvia.types.max_hours_types import MaxHoursResponse
 from elvia.types.meter_value_types import MeterValueResponse
 from urllib.parse import urlencode
@@ -64,7 +60,7 @@ class MeterValue:
             }
         ) as websession:
             response = await websession.get(url_string)
-            await _verify_response(response, 200)
+            await verify_response(response, 200)
             return await response.json()
 
     async def get_meter_values(
@@ -103,31 +99,5 @@ class MeterValue:
             }
         ) as websession:
             response = await websession.get(urlunparse(url))
-            await _verify_response(response, 200)
+            await verify_response(response, 200)
             return await response.json()
-
-
-async def _verify_response(response, expected_status):
-    if response.status == 400:
-        raise InvalidRequestBody(
-            "Body is malformed",
-            status_code=response.status,
-            headers=response.headers,
-            body=await response.text(),
-        )
-
-    if response.status in [401, 403]:
-        raise AuthError(
-            "Auth failed",
-            status_code=response.status,
-            headers=response.headers,
-            body=await response.text(),
-        )
-
-    if response.status != expected_status:
-        raise UnexpectedError(
-            "Received unexpected server response",
-            status_code=response.status_code,
-            headers=response.headers,
-            body=await response.text(),
-        )
