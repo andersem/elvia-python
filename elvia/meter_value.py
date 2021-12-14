@@ -60,7 +60,7 @@ class MeterValue:
             }
         ) as websession:
             response = await websession.get(url_string)
-            await _verify_response(response, 200)
+            await verify_response(response, 200)
             return await response.json()
 
     async def get_meter_values(
