@@ -7,7 +7,10 @@ import aiohttp
 from elvia.error import ElviaClientException
 
 from elvia.request_handler import verify_response
-from elvia.types.grid_tariff_types import TariffForMeteringPointsResponse, TariffTypeResponse
+from elvia.types.grid_tariff_types import (
+    TariffForMeteringPointsResponse,
+    TariffTypeResponse,
+)
 
 
 class GridTariff:
@@ -31,37 +34,43 @@ class GridTariff:
         range: str = "today",
         start_time: str = None,
         end_time: str = None,
-        metering_point_ids=[]
+        metering_point_ids=[],
     ) -> TariffForMeteringPointsResponse:
         """
         Provides private grid tariffs.
         """
         url_base = f"{self.api_url}/grid-tariff/api/1/tariffquery/meteringpointsgridtariffs"
         if len(metering_point_ids) == 0:
-            raise ElviaClientException("At least one metering_point_id is needed")
-        body = {
-            "meteringPointIds": metering_point_ids
-        }
+            raise ElviaClientException(
+                "At least one metering_point_id is needed"
+            )
+        body = {"meteringPointIds": metering_point_ids}
         if start_time is not None and end_time is not None:
             body["startTime"] = start_time
             body["endTime"] = end_time
         elif start_time is not None or end_time is not None:
-            raise ElviaClientException("Use either range or both start_time and end_time")
+            raise ElviaClientException(
+                "Use either range or both start_time and end_time"
+            )
         elif range is not None:
             body["range"] = range
         else:
-            raise ElviaClientException("Use either range or both start_time and end_time")
+            raise ElviaClientException(
+                "Use either range or both start_time and end_time"
+            )
 
         async with aiohttp.ClientSession(
             headers={
                 "Ocp-Apim-Subscription-Key": self.token,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
         ) as websession:
-            response = await websession.post(url_base, data=json.dumps({
-                "range": range,
-                "meteringPointIds": metering_point_ids
-            }))
+            response = await websession.post(
+                url_base,
+                data=json.dumps(
+                    {"range": range, "meteringPointIds": metering_point_ids}
+                ),
+            )
             await verify_response(response, 200)
             return await response.json()
 
@@ -75,7 +84,7 @@ class GridTariff:
         async with aiohttp.ClientSession(
             headers={
                 "Ocp-Apim-Subscription-Key": self.token,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
         ) as websession:
             response = await websession.get(url_base)
@@ -94,24 +103,26 @@ class GridTariff:
         Provides private tarifftypes.
         """
         url_base = f"{self.api_url}/grid-tariff/api/1/tariffquery"
-        query = {
-            "TariffKey": tariff_key
-        }
+        query = {"TariffKey": tariff_key}
         if start_time is not None and end_time is not None:
             query["startTime"] = start_time
             query["endTime"] = end_time
         elif start_time is not None or end_time is not None:
-            raise ElviaClientException("Use either range or both start_time and end_time")
+            raise ElviaClientException(
+                "Use either range or both start_time and end_time"
+            )
         elif range is not None:
             query["range"] = range
         else:
-            raise ElviaClientException("Use either range or both start_time and end_time")
+            raise ElviaClientException(
+                "Use either range or both start_time and end_time"
+            )
         url = urlparse(url_base)._replace(query=urlencode(query))
 
         async with aiohttp.ClientSession(
             headers={
                 "Ocp-Apim-Subscription-Key": self.token,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
         ) as websession:
             response = await websession.get(urlunparse(url))

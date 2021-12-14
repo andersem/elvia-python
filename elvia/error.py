@@ -2,11 +2,14 @@ class ElviaException(Exception):
     def __init__(self, message):
         self.message = message
 
+
 class ElviaClientException(ElviaException):
     pass
 
+
 class MissingCredentialsException(ElviaException):
     pass
+
 
 class ElviaServerException(ElviaException):
     def __init__(self, message, status_code, headers, body):

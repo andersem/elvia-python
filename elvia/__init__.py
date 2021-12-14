@@ -20,7 +20,9 @@ class Elvia:
     def meter_value(self):
         if self.meter is None:
             if self.meter_value_token is None:
-                raise MissingCredentialsException("meter_value_token is not set")
+                raise MissingCredentialsException(
+                    "meter_value_token is not set"
+                )
             self.meter = MeterValue(
                 self.api_url,
                 self.meter_value_token,
@@ -30,7 +32,9 @@ class Elvia:
     def grid_tariff(self):
         if self.tariff is None:
             if self.grid_tariff_token is None:
-                raise MissingCredentialsException("grid_tariff_token is not set")
+                raise MissingCredentialsException(
+                    "grid_tariff_token is not set"
+                )
             self.tariff = GridTariff(
                 self.api_url,
                 self.grid_tariff_token,

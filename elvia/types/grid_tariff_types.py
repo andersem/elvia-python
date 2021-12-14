@@ -65,5 +65,6 @@ class GridTariffCollection(TypedDict):
 class TariffForMeteringPointsResponse(TypedDict):
     gridTariffCollections: List[GridTariffCollection]
 
+
 class TariffQueryResponse(TypedDict):
     gridTariff: GridTariff
