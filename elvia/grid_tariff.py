@@ -61,7 +61,7 @@ class GridTariff:
 
         async with aiohttp.ClientSession(
             headers={
-                "Ocp-Apim-Subscription-Key": self.token,
+                "X-API-Key": self.token,
                 "Content-Type": "application/json",
             }
         ) as websession:
@@ -83,7 +83,7 @@ class GridTariff:
         url_base = f"{self.api_url}/grid-tariff/digin/api/1/tarifftype"
         async with aiohttp.ClientSession(
             headers={
-                "Ocp-Apim-Subscription-Key": self.token,
+                "X-API-Key": self.token,
                 "Content-Type": "application/json",
             }
         ) as websession:
@@ -121,7 +121,7 @@ class GridTariff:
 
         async with aiohttp.ClientSession(
             headers={
-                "Ocp-Apim-Subscription-Key": self.token,
+                "X-API-Key": self.token,
                 "Content-Type": "application/json",
             }
         ) as websession:
@@ -138,7 +138,7 @@ class GridTariff:
         url_base = f"{self.api_url}/grid-tariff/Ping"
         async with aiohttp.ClientSession(
             headers={
-                "Ocp-Apim-Subscription-Key": self.token,
+                "X-API-Key": self.token,
             }
         ) as websession:
             response = await websession.get(url_base)
