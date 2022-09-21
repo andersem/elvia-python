@@ -39,7 +39,7 @@ class GridTariff:
         """
         Provides private grid tariffs.
         """
-        url_base = f"{self.api_url}/grid-tariff/api/1/tariffquery/meteringpointsgridtariffs"
+        url_base = f"{self.api_url}/grid-tariff/digin/api/1/tariffquery/meteringpointsgridtariffs"
         if len(metering_point_ids) == 0:
             raise ElviaClientException(
                 "At least one metering_point_id is needed"
@@ -80,7 +80,7 @@ class GridTariff:
         """
         Provides private tarifftypes.
         """
-        url_base = f"{self.api_url}/grid-tariff/api/1/tarifftype"
+        url_base = f"{self.api_url}/grid-tariff/digin/api/1/tarifftype"
         async with aiohttp.ClientSession(
             headers={
                 "Ocp-Apim-Subscription-Key": self.token,
@@ -102,7 +102,7 @@ class GridTariff:
         """
         Provides private tarifftypes.
         """
-        url_base = f"{self.api_url}/grid-tariff/api/1/tariffquery"
+        url_base = f"{self.api_url}/grid-tariff/digin/api/1/tariffquery"
         query = {"TariffKey": tariff_key}
         if start_time is not None and end_time is not None:
             query["startTime"] = start_time
